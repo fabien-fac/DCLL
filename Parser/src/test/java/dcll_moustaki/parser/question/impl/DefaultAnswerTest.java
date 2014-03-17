@@ -109,11 +109,17 @@ public class DefaultAnswerTest extends TestCase {
 		String identifier = "identifier";
 		String identifier2 = "identifier2";
 		DefaultAnswer answer = new DefaultAnswer();
+		DefaultAnswer answer3 = null;
 		answer.setIdentifier(identifier);
 		
 		DefaultAnswer answer2 = new DefaultAnswer();
 		answer2.setIdentifier(identifier2);
 		
-		assertNotSame(answer, answer2);
+		assertFalse(answer.equals(answer2));
+		
+		assertFalse(answer.equals(new String("oij")));
+		
+		assertFalse(answer.equals(answer3));
+		
 	}
 }
