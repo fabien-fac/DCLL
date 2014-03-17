@@ -41,7 +41,8 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>2.11</version>
 				<configuration>
-				  <configLocation>checkstyle.xml</configLocation>
+					<sourceEncoding>UTF-8</sourceEncoding>
+				  	<configLocation>checkstyle.xml</configLocation>
 				</configuration>
 				<reportSets>
 					<reportSet>
