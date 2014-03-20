@@ -114,6 +114,4 @@ public class DefaultQuestion implements Question {
     public List<TextBlock> getTextBlockList() {
         return textBlockList;
     }
-
-
 }

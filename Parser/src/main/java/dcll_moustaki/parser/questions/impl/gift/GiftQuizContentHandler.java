@@ -32,168 +32,229 @@ import dcll_moustaki.parser.questions.impl.DefaultQuiz;
  */
 public class GiftQuizContentHandler implements QuizContentHandler {
 
+	/**
+	 * Receive notification of the beginning of a quiz
+	 */
+	public void onStartQuiz() {
+		quiz = new DefaultQuiz();
+	}
 
-    /**
-     * Get the quiz
-     *
-     * @return the quiz
-     */
-    public DefaultQuiz getQuiz() {
-        return quiz;
-    }
+	/**
+	 * Receive notification of the end of a quiz
+	 */
+	public void onEndQuiz() {
+	}
 
+	/**
+	 * Receive notification of the beginning of a question
+	 */
+	public void onStartQuestion() {
+		currentQuestion = new DefaultQuestion();
+		currentQuestion.setQuestionType(QuestionType.MultipleChoice);
+	}
 
-    /**
-     * Receive notification of the beginning of a quiz
-     */
-    public void onStartQuiz() {
-        quiz = new DefaultQuiz();
-    }
+	/**
+	 * Receive notification of the end of a question
+	 */
+	public void onEndQuestion() {
+		postProcess(currentQuestion);
+		quiz.addQuestion(currentQuestion);
+		currentQuestion = null;
+	}
 
-    /**
-     * Receive notification of the end of a quiz
-     */
-    public void onEndQuiz() {
-    }
+	/**
+	 * Receive notification of the beginning of a title
+	 */
+	public void onStartTitle() {
+		currentTitle = new StringBuffer();
+	}
 
-    /**
-     * Receive notification of the beginning of a question
-     */
-    public void onStartQuestion() {
-        currentQuestion = new DefaultQuestion();
-        currentQuestion.setQuestionType(QuestionType.MultipleChoice);
-    }
+	/**
+	 * Receive notification of the end of a title
+	 */
+	public void onEndTitle() {
+		currentQuestion.setTitle(currentTitle.toString());
+		currentTitle = null;
+	}
 
-    /**
-     * Receive notification of the end of a question
-     */
-    public void onEndQuestion() {
-        postProcess(currentQuestion);
-        quiz.addQuestion(currentQuestion);
-        currentQuestion = null;
-    }
+	/**
+	 * Receive notification of the beginning of an answer fragment
+	 */
+	public void onStartAnswerBlock() {
+		currentAnswerBlock = new DefaultAnswerBlock();
+		answerCounter = 0;
+	}
 
+	/**
+	 * Receive notification of the end of an answer fragment
+	 */
+	public void onEndAnswerBlock() {
+		currentQuestion.addAnswerBlock(currentAnswerBlock);
+		currentAnswerBlock = null;
+	}
 
-    /**
-     * Receive notification of the beginning of a title
-     */
-    public void onStartTitle() {
-        currentTitle = new StringBuffer();
-    }
+	/**
+	 * Receive notification of the beginning of an answer
+	 */
+	public void onStartAnswer(String prefix) {
+		currentAnswer = new DefaultAnswer();
+		currentAnswer.setIdentifier(String.valueOf(answerCounter++));
+		if ("=".equals(prefix)) {
+			currentAnswer.setPercentCredit(100f);
+			currentQuestion.setQuestionType(QuestionType.ExclusiveChoice);
+		} else {
+			currentAnswer.setPercentCredit(0f);
+		}
+	}
 
-    /**
-     * Receive notification of the end of a title
-     */
-    public void onEndTitle() {
-        currentQuestion.setTitle(currentTitle.toString());
-        currentTitle = null;
-    }
+	/**
+	 * Receive notification of the end of an answer
+	 */
+	public void onEndAnswer() {
+		currentAnswerBlock.addAnswer(currentAnswer);
+		currentAnswer = null;
+	}
 
-    /**
-     * Receive notification of the beginning of an answer fragment
-     */
-    public void onStartAnswerBlock() {
-        currentAnswerBlock = new DefaultAnswerBlock();
-        answerCounter = 0;
-    }
+	/**
+	 * Notification of the beginning of a credit specification
+	 */
+	public void onStartAnswerCredit() {
+		answerCreditIsBeenBuilt = true;
+	}
 
-    /**
-     * Receive notification of the end of an answer fragment
-     */
-    public void onEndAnswerBlock() {
-        currentQuestion.addAnswerBlock(currentAnswerBlock);
-        currentAnswerBlock = null;
-    }
+	/**
+	 * Notification of the end of a credit specification
+	 */
+	public void onEndAnswerCredit() {
+		answerCreditIsBeenBuilt = false;
+	}
 
-    /**
-     * Receive notification of the beginning of an answer
-     */
-    public void onStartAnswer(String prefix) {
-        currentAnswer = new DefaultAnswer();
-        currentAnswer.setIdentifier(String.valueOf(answerCounter++));
-        if ("=".equals(prefix)) {
-            currentAnswer.setPercentCredit(100f);
-            currentQuestion.setQuestionType(QuestionType.ExclusiveChoice);
-        } else {
-            currentAnswer.setPercentCredit(0f);
-        }
-    }
+	/**
+	 * Receive notification of the beginning feedback
+	 */
+	public void onStartAnswerFeedBack() {
+		feedbackIsBeenBuilt = true;
+	}
 
-    /**
-     * Receive notification of the end of an answer
-     */
-    public void onEndAnswer() {
-        currentAnswerBlock.addAnswer(currentAnswer);
-        currentAnswer = null;
-    }
+	/**
+	 * Receive notification of the end of a feedback
+	 */
+	public void onEndAnswerFeedBack() {
+		feedbackIsBeenBuilt = false;
+	}
 
-    /**
-     * Notification of the beginning of a credit specification
-     */
-    public void onStartAnswerCredit() {
-        answerCreditIsBeenBuilt = true;
-    }
+	/**
+	 * Receive notification of a new string
+	 * 
+	 * @param str
+	 *            the received string
+	 */
+	public void onString(final String str) {
+		String trimedStr = str.trim();
+		if (currentTitle != null) {
+			currentTitle.append(trimedStr);
+			logger.debug("currentTitle | " + currentTitle.toString());
+		} else if (answerCreditIsBeenBuilt) {
+			currentAnswer.setPercentCredit(new Float(trimedStr));
+		} else if (feedbackIsBeenBuilt) {
+			currentAnswer.setFeedback(trimedStr);
+		} else if (currentAnswer != null) {
+			currentAnswer.setTextValue(trimedStr);
+		} else if (currentQuestion != null && currentAnswerBlock == null) {
+			logger.debug("Text fragment | " + str);
+			currentQuestion.addTextBlock(new TextBlock() {
+				public String getText() {
+					return str;
+				}
+			});
+		}
+	}
 
-    /**
-     * Notification of the end of a credit specification
-     */
-    public void onEndAnswerCredit() {
-        answerCreditIsBeenBuilt = false;
-    }
+	private void postProcess(Question question) {
+		logger.debug("Post processing of the current question");
+	}
 
-    /**
-     * Receive notification of the beginning feedback
-     */
-    public void onStartAnswerFeedBack() {
-        feedbackIsBeenBuilt = true;
-    }
+	/**
+	 * Get the quiz
+	 * 
+	 * @return the quiz
+	 */
+	public DefaultQuiz getQuiz() {
+		return quiz;
+	}
 
-    /**
-     * Receive notification of the end of a feedback
-     */
-    public void onEndAnswerFeedBack() {
-        feedbackIsBeenBuilt = false;
-    }
+	/**
+	 * Get answer
+	 * 
+	 * @return the answer
+	 */
+	public DefaultAnswer getCurrentAnswer() {
+		return currentAnswer;
+	}
 
-    /**
-     * Receive notification of a new string
-     *
-     * @param str the received string
-     */
-    public void onString(final String str) {
-        String trimedStr = str.trim();
-        if (currentTitle != null) {
-            currentTitle.append(trimedStr);
-            logger.debug("currentTitle | " + currentTitle.toString());
-        } else if (answerCreditIsBeenBuilt) {
-            currentAnswer.setPercentCredit(new Float(trimedStr));
-        } else if (feedbackIsBeenBuilt) {
-            currentAnswer.setFeedback(trimedStr);
-        } else if (currentAnswer != null) {
-            currentAnswer.setTextValue(trimedStr);
-        } else if (currentQuestion != null && currentAnswerBlock == null) {
-            logger.debug("Text fragment | " + str);
-            currentQuestion.addTextBlock(new TextBlock() {
-                public String getText() {
-                    return str;
-                }
-            });
-        }
-    }
+	/**
+	 * Get the Currentquestion
+	 * 
+	 * @return the Currentquestion
+	 */
+	public DefaultQuestion getCurrentQuestion() {
+		return currentQuestion;
+	}
 
+	/**
+	 * Get the CurrentAnswerBlock
+	 * 
+	 * @return the CurrentAnswerBlock
+	 */
+	public DefaultAnswerBlock getCurrentAnswerBlock() {
+		return currentAnswerBlock;
+	}
 
-    private void postProcess(Question question) {
-       logger.debug("Post processing of the current question");
-    }
+	/**
+	 * Get answerCounter
+	 * 
+	 * @return the answerCounter
+	 */
+	public int getAnswerCounter() {
+		return answerCounter;
+	}
 
-    private static Logger logger = Logger.getLogger(GiftQuizContentHandler.class);
+	/**
+	 * Get the CurrentTitle
+	 * 
+	 * @return the CurrentTitle
+	 */
+	public StringBuffer getCurrentTitle() {
+		return currentTitle;
+	}
 
-    private DefaultQuiz quiz;
-    private DefaultQuestion currentQuestion;
-    private DefaultAnswerBlock currentAnswerBlock;
-    private DefaultAnswer currentAnswer;
-    private StringBuffer currentTitle;
-    private boolean answerCreditIsBeenBuilt;
-    private boolean feedbackIsBeenBuilt;
-    private int answerCounter ;
+	/**
+	 * Get the answerCreditIsBeenBuilt
+	 * 
+	 * @return the answerCreditIsBeenBuilt
+	 */
+	public boolean getAnswerCreditIsBeenBuilt() {
+		return answerCreditIsBeenBuilt;
+	}
+	
+	/**
+	 * Get the feedbackIsBeenBuilt
+	 * 
+	 * @return the feedbackIsBeenBuilt
+	 */
+	public boolean getAnswerfeedbackIsBeenBuilt() {
+		return feedbackIsBeenBuilt;
+	}
+	
+	private static Logger logger = Logger
+			.getLogger(GiftQuizContentHandler.class);
+
+	private DefaultQuiz quiz;
+	private DefaultQuestion currentQuestion;
+	private DefaultAnswerBlock currentAnswerBlock;
+	private DefaultAnswer currentAnswer;
+	private StringBuffer currentTitle;
+	private boolean answerCreditIsBeenBuilt;
+	private boolean feedbackIsBeenBuilt;
+	private int answerCounter;
 }
