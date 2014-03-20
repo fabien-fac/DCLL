@@ -19,6 +19,7 @@ public class GiftReader implements QuizReader {
         int currentChar;
         quizContentHandler.onStartQuiz();
         while ((currentChar = reader.read()) != -1) {
+//        	System.out.println("char : " + currentChar);
             checkQuestionHasStarted();
             if (currentChar == ':') {
                 processColonCharacter();
@@ -230,7 +231,113 @@ public class GiftReader implements QuizReader {
         this.quizContentHandler = quizContentHandler;
     }
 
-    private QuizContentHandler quizContentHandler;
+    public StringBuffer getAccumulator() {
+		return accumulator;
+	}
+
+	public void setAccumulator(StringBuffer accumulator) {
+		this.accumulator = accumulator;
+	}
+
+	public int getControlCharAccumulator() {
+		return controlCharAccumulator;
+	}
+
+	public void setControlCharAccumulator(int controlCharAccumulator) {
+		this.controlCharAccumulator = controlCharAccumulator;
+	}
+
+	public boolean isEscapeMode() {
+		return escapeMode;
+	}
+
+	public void setEscapeMode(boolean escapeMode) {
+		this.escapeMode = escapeMode;
+	}
+
+	public boolean isQuestionHasStarted() {
+		return questionHasStarted;
+	}
+
+	public void setQuestionHasStarted(boolean questionHasStarted) {
+		this.questionHasStarted = questionHasStarted;
+	}
+
+	public boolean isQuestionHasEnded() {
+		return questionHasEnded;
+	}
+
+	public void setQuestionHasEnded(boolean questionHasEnded) {
+		this.questionHasEnded = questionHasEnded;
+	}
+
+	public boolean isTitleHasStarted() {
+		return titleHasStarted;
+	}
+
+	public void setTitleHasStarted(boolean titleHasStarted) {
+		this.titleHasStarted = titleHasStarted;
+	}
+
+	public boolean isTitleHasEnded() {
+		return titleHasEnded;
+	}
+
+	public void setTitleHasEnded(boolean titleHasEnded) {
+		this.titleHasEnded = titleHasEnded;
+	}
+
+	public boolean isAnswerFragmentHasStarted() {
+		return answerFragmentHasStarted;
+	}
+
+	public void setAnswerFragmentHasStarted(boolean answerFragmentHasStarted) {
+		this.answerFragmentHasStarted = answerFragmentHasStarted;
+	}
+
+	public boolean isAnswerFragmentHasEnded() {
+		return answerFragmentHasEnded;
+	}
+
+	public void setAnswerFragmentHasEnded(boolean answerFragmentHasEnded) {
+		this.answerFragmentHasEnded = answerFragmentHasEnded;
+	}
+
+	public boolean isAnswerHasStarted() {
+		return answerHasStarted;
+	}
+
+	public void setAnswerHasStarted(boolean answerHasStarted) {
+		this.answerHasStarted = answerHasStarted;
+	}
+
+	public boolean isAnswerFeedbackHasStarted() {
+		return answerFeedbackHasStarted;
+	}
+
+	public void setAnswerFeedbackHasStarted(boolean answerFeedbackHasStarted) {
+		this.answerFeedbackHasStarted = answerFeedbackHasStarted;
+	}
+
+	public boolean isAnswerCreditHasStarted() {
+		return answerCreditHasStarted;
+	}
+
+	public void setAnswerCreditHasStarted(boolean answerCreditHasStarted) {
+		this.answerCreditHasStarted = answerCreditHasStarted;
+	}
+
+	public boolean isAnswerCreditHasEnded() {
+		return answerCreditHasEnded;
+	}
+
+	public void setAnswerCreditHasEnded(boolean answerCreditHasEnded) {
+		this.answerCreditHasEnded = answerCreditHasEnded;
+	}
+
+
+
+	private QuizContentHandler quizContentHandler;
     private StringBuffer accumulator;
     private int controlCharAccumulator = -1;
     private boolean escapeMode;
