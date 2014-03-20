@@ -1,16 +1,16 @@
-package dcll_moustaki.parser.questions.gift;
+package dcll_moustaki.parser.questions.impl.giftTest;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
-import dcll_moustaki.parser.question.impl.DefaultAnswerBlockTest;
 import dcll_moustaki.parser.questions.QuizContentHandler;
 import dcll_moustaki.parser.questions.QuizReader;
 import dcll_moustaki.parser.questions.impl.DefaultAnswerBlock;
 import dcll_moustaki.parser.questions.impl.gift.GiftQuizContentHandler;
 import dcll_moustaki.parser.questions.impl.gift.GiftReader;
 import dcll_moustaki.parser.questions.impl.gift.GiftReaderException;
+import dcll_moustaki.parser.questions.implTest.DefaultAnswerBlockTest;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

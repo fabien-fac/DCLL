@@ -1,4 +1,4 @@
-package dcll_moustaki.parser.question.impl;
+package dcll_moustaki.parser.questions.implTest;
 
 import dcll_moustaki.parser.questions.impl.DefaultAnswer;
 import junit.framework.Test;

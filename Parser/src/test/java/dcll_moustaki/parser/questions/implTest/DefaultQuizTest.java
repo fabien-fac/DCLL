@@ -1,6 +1,5 @@
-package dcll_moustaki.parser.question.impl;
+package dcll_moustaki.parser.questions.implTest;
 
-import static org.junit.Assert.*;
 import dcll_moustaki.parser.questions.Quiz;
 import dcll_moustaki.parser.questions.impl.DefaultQuiz;
 import junit.framework.TestCase;
