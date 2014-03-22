@@ -59,7 +59,8 @@ public class GiftReaderTest extends TestCase {
 		QuizContentHandler gq = new GiftQuizContentHandler();
 		gr.setQuizContentHandler(gq);
 		
-		String s = new String("{Question|type=\"()\"}+ The correct answer.- Distractor.- Distractor.- Distractor.");
+		String s = new String("{Question\\:12|type=\"()\"}+ 6\\%.- \\~12.- \\#0672.- http\\:\\test.");
+		//String s = new String("{Question|type=\"()\"}+ 6%.- ~12.- #0672#.- http:\\test.");
 		Reader r = new StringReader(s);
 
 		//curChar = r.read(); // IOException
