@@ -19,7 +19,6 @@ public class GiftReader implements QuizReader {
         int currentChar;
         quizContentHandler.onStartQuiz();
         while ((currentChar = reader.read()) != -1) {
-//        	System.out.println("char : " + currentChar);
             checkQuestionHasStarted();
             if (currentChar == ':') {
                 processColonCharacter();
@@ -51,14 +50,14 @@ public class GiftReader implements QuizReader {
 
     }
 
-    private void checkQuestionHasStarted() {
+    public void checkQuestionHasStarted() {
         if (!questionHasStarted) {
             questionHasStarted = true;
             quizContentHandler.onStartQuestion();
         }
     }
 
-    private void endQuiz() throws GiftReaderQuestionWithInvalidFormatException {
+    public void endQuiz() throws GiftReaderQuestionWithInvalidFormatException {
         if (!questionHasEnded && !answerFragmentHasEnded) {
             throw new GiftReaderQuestionWithInvalidFormatException();
         }

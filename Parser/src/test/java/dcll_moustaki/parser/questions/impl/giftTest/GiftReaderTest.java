@@ -60,19 +60,10 @@ public class GiftReaderTest extends TestCase {
 		gr.setQuizContentHandler(gq);
 		
 		String s = new String("{Question\\:12|type=\"()\"}+ 6\\%.- \\~12.- \\#0672.- http\\:\\test.");
-		//String s = new String("{Question|type=\"()\"}+ 6%.- ~12.- #0672#.- http:\\test.");
 		Reader r = new StringReader(s);
 
 		//curChar = r.read(); // IOException
 
 		gr.parse(r); // giftReaderException
-		
-		/*GiftReader gr2 = new GiftReader();
-		QuizContentHandler gq2 = new GiftQuizContentHandler();
-		gr2.setQuizContentHandler(gq2);
-		String s2 = new String("{Complete each box with a synonym of the following words |type=\"{}\"} #free: { gratis _6 } #well: { good _4 }");
-		Reader r2 = new StringReader(s2);
-		
-		gr2.parse(r2);*/
 	}
 }
