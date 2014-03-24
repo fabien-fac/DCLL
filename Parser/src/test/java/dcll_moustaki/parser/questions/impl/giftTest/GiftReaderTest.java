@@ -9,6 +9,8 @@ import dcll_moustaki.parser.questions.QuizReaderException;
 import dcll_moustaki.parser.questions.impl.gift.GiftQuizContentHandler;
 import dcll_moustaki.parser.questions.impl.gift.GiftReader;
 import dcll_moustaki.parser.questions.impl.gift.GiftReaderException;
+import dcll_moustaki.parser.questions.impl.gift.GiftReaderNotEscapedCharacterException;
+import dcll_moustaki.parser.questions.impl.gift.GiftReaderQuestionWithInvalidFormatException;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -77,10 +79,9 @@ public class GiftReaderTest extends TestCase {
 	}
 
 	/**
-	 * Test parse
+	 * Test parse GiftReaderNotEscapedCharacterException
 	 */
-	@org.junit.Test(expected = QuizReaderException.class)
-	public void testParseException() throws IOException, GiftReaderException {
+	public void testParseGiftReaderNotEscapedCharacterException() throws IOException, GiftReaderException {
 		GiftReader gr = new GiftReader();
 		QuizContentHandler gq = new GiftQuizContentHandler();
 		gr.setQuizContentHandler(gq);
@@ -91,7 +92,25 @@ public class GiftReaderTest extends TestCase {
 		try {
 			gr.parse(r);
 			fail("My method didn't throw when I expected it to");
-		} catch (QuizReaderException e) {
+		} catch (GiftReaderNotEscapedCharacterException e) {
+		}
+	}
+	
+	/**
+	 * Test parse GiftReaderQuestionWithInvalidFormatException
+	 */
+	public void testParseGiftReaderQuestionWithInvalidFormatException() throws IOException, GiftReaderException {
+		GiftReader gr = new GiftReader();
+		QuizContentHandler gq = new GiftQuizContentHandler();
+		gr.setQuizContentHandler(gq);
+
+		String s = new String(
+				"{Question\\:12|type=\"()\"+ 6\\%.- \\~12.- \\#0672.- http\\:\\test.");
+		Reader r = new StringReader(s);
+		try {
+			gr.parse(r);
+			fail("My method didn't throw when I expected it to");
+		} catch (GiftReaderQuestionWithInvalidFormatException e) {
 		}
 	}
 }
