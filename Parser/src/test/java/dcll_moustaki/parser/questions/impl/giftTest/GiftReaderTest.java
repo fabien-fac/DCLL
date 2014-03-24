@@ -10,6 +10,7 @@ import dcll_moustaki.parser.questions.impl.gift.GiftReader;
 import dcll_moustaki.parser.questions.impl.gift.GiftReaderException;
 import dcll_moustaki.parser.questions.impl.gift.GiftReaderNotEscapedCharacterException;
 import dcll_moustaki.parser.questions.impl.gift.GiftReaderQuestionWithInvalidFormatException;
+import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -67,7 +68,7 @@ public class GiftReaderTest extends TestCase {
 	/**
 	 * Test parse GiftReaderNotEscapedCharacterException
 	 */
-	public void testParseGiftReaderNotEscapedCharacterException() throws IOException, GiftReaderException {
+	/*public void testParseGiftReaderNotEscapedCharacterException() throws IOException, GiftReaderException {
 		GiftReader gr = new GiftReader();
 		QuizContentHandler gq = new GiftQuizContentHandler();
 		gr.setQuizContentHandler(gq);
@@ -80,24 +81,145 @@ public class GiftReaderTest extends TestCase {
 			fail("My method didn't throw when I expected it to");
 		} catch (GiftReaderNotEscapedCharacterException e) {
 		}
-	}
+	}*/
 	
 	/**
-	 * Test parse GiftReaderQuestionWithInvalidFormatException
+	 * Test flushAccumulator
 	 */
-	public void testParseGiftReaderQuestionWithInvalidFormatException() throws IOException, GiftReaderException {
+	public void testFlushAccumulator()
+	{
 		GiftReader gr = new GiftReader();
 		QuizContentHandler gq = new GiftQuizContentHandler();
 		gr.setQuizContentHandler(gq);
-
-		String s = new String(
-				"{Question\\:12|type=\"()\"+ 6\\%.- \\~12.- \\#0672.- http\\:\\test.");
-		Reader r = new StringReader(s);
-		try {
-			gr.parse(r);
-			fail("My method didn't throw when I expected it to");
-		} catch (GiftReaderQuestionWithInvalidFormatException e) {
+		
+		String s = new String ("test");
+		StringBuffer acc = new StringBuffer(s);
+		
+		gr.setAccumulator(acc);
+		assertNotNull(gr.getAccumulator());
+		
+		gr.flushAccumulator();
+		
+		assertNull(gr.getAccumulator());
+	}
+	
+	/**
+	 * Test processAnyCharacter
+	 */
+	public void testProcessAnyCharacter()
+	{
+		GiftReader gr = new GiftReader();
+		QuizContentHandler gq = new GiftQuizContentHandler();
+		gr.setQuizContentHandler(gq);
+		
+		int curChar = 'l';
+		int ctrl = 10;
+		
+		gr.setControlCharAccumulator(ctrl);
+		gr.setEscapeMode(true);
+		
+		try
+		{
+			gr.processAnyCharacter(curChar);
 		}
-
+		catch (GiftReaderNotEscapedCharacterException ex)
+		{
+			assertEquals(ex.getClass(), GiftReaderNotEscapedCharacterException.class);
+		}
+		
+		assertEquals(gr.getControlCharAccumulator(), 10);
+		assertEquals(gr.isEscapeMode(), true);
+		
+		ctrl = '\\';
+		
+		gr.setControlCharAccumulator(ctrl);
+		
+		try
+		{
+			gr.processAnyCharacter(curChar);
+		}
+		catch (GiftReaderNotEscapedCharacterException ex)
+		{
+			assertEquals(ex.getClass(), GiftReaderNotEscapedCharacterException.class);
+		}
+		
+		assertEquals(gr.getControlCharAccumulator(), -1);
+		assertEquals(gr.isEscapeMode(), false);
+		
+		ctrl = -1;
+		
+		gr.setControlCharAccumulator(ctrl);
+		gr.setEscapeMode(true);
+		
+		try
+		{
+			gr.processAnyCharacter(curChar);
+		}
+		catch (GiftReaderNotEscapedCharacterException ex)
+		{
+			assertEquals(ex.getClass(), GiftReaderNotEscapedCharacterException.class);
+		}
+		
+		assertEquals(gr.getControlCharAccumulator(), -1);
+		assertEquals(gr.isEscapeMode(), false);
+	}
+		
+	/**
+	 * Test endQuiz
+	 */
+	@org.junit.Test (expected = GiftReaderQuestionWithInvalidFormatException.class)
+	public void testEndQuiz()
+	{
+		GiftReader gr = new GiftReader();
+		QuizContentHandler gq = new GiftQuizContentHandler();
+		gr.setQuizContentHandler(gq);
+		
+		gr.setQuestionHasEnded(false);
+		gr.setAnswerFragmentHasEnded(false);
+		
+		try
+		{
+			gr.endQuiz();
+		}
+		catch (GiftReaderQuestionWithInvalidFormatException ex)
+		{
+			assertEquals(ex.getClass(), GiftReaderQuestionWithInvalidFormatException.class);
+		}
+		
+		gr.setQuestionHasEnded(true);
+		gr.setAnswerFragmentHasEnded(true);
+		
+		try
+		{
+			gr.endQuiz();
+		}
+		catch (GiftReaderQuestionWithInvalidFormatException ex)
+		{
+			assertEquals(ex.getClass(), GiftReaderQuestionWithInvalidFormatException.class);
+		}
+//		
+//		gr.setQuestionHasEnded(false);
+//		gr.setAnswerFragmentHasEnded(true);
+//		
+//		try
+//		{
+//			gr.endQuiz();
+//		}
+//		catch (GiftReaderQuestionWithInvalidFormatException ex)
+//		{
+//			assertEquals(ex.getClass(), GiftReaderQuestionWithInvalidFormatException.class);
+//		}
+//		
+//		gr.setQuestionHasEnded(true);
+//		gr.setAnswerFragmentHasEnded(false);
+//		
+//		try
+//		{
+//			gr.endQuiz();
+//		}
+//		catch (GiftReaderQuestionWithInvalidFormatException ex)
+//		{
+//			assertEquals(ex.getClass(), GiftReaderQuestionWithInvalidFormatException.class);
+//		}
 	}
 }

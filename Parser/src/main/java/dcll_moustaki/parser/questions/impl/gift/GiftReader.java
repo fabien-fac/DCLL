@@ -201,21 +201,27 @@ public class GiftReader implements QuizReader {
 
     }
 
-    private void processAnyCharacter(int currentChar) throws GiftReaderNotEscapedCharacterException {
-        if (accumulator == null) {
+    public void processAnyCharacter(int currentChar) throws GiftReaderNotEscapedCharacterException {
+        if (accumulator == null)
+        {
             accumulator = new StringBuffer();
         }
         accumulator.append((char) currentChar);
-        if (controlCharAccumulator != -1) { // if a control caracter is present,
-            if (controlCharAccumulator != '\\') {  // it must be a \
+        if (controlCharAccumulator != -1)
+        { // if a control caracter is present,
+        	
+            if (controlCharAccumulator != '\\')
+            {  // it must be a \
+            	System.out.println("liil : "+controlCharAccumulator);
                 throw new GiftReaderNotEscapedCharacterException();
             }
+            
             controlCharAccumulator = -1;
         }
         escapeMode = false;
     }
 
-    private void flushAccumulator() {
+    public void flushAccumulator() {
         if (accumulator != null) {
             quizContentHandler.onString(accumulator.toString());
             accumulator = null;
