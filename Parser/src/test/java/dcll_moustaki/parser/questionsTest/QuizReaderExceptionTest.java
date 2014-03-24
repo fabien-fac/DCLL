@@ -48,6 +48,7 @@ public class QuizReaderExceptionTest extends TestCase {
 		catch (GiftReaderQuestionWithInvalidFormatException ex)
 		{
 			ex.printStackTrace();
+			
 		}
 	}
 }
