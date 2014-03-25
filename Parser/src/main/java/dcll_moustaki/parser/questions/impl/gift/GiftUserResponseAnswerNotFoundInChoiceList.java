@@ -19,9 +19,8 @@ package dcll_moustaki.parser.questions.impl.gift;
 /**
  * @author franck Silvestre
  */
-public class GiftUserResponseAnswerNotFoundInChoiceList
-                                 extends GiftUserResponseException {
+public class GiftUserResponseAnswerNotFoundInChoiceList {
     public GiftUserResponseAnswerNotFoundInChoiceList() {
-        super("Answer_not_found_choice_list");
+        super();
     }
 }

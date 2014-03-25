@@ -22,12 +22,11 @@ import java.util.List;
 
 import dcll_moustaki.parser.questions.Question;
 import dcll_moustaki.parser.questions.UserAnswerBlock;
-import dcll_moustaki.parser.questions.UserResponse;
 
 /**
  * @author franck Silvestre
  */
-public class DefaultUserResponse implements UserResponse {
+public class DefaultUserResponse {
 
     private String userIdentifier;
     private Question question;

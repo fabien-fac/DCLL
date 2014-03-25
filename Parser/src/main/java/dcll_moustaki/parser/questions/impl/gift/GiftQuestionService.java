@@ -19,16 +19,10 @@ package dcll_moustaki.parser.questions.impl.gift;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.List;
 
-import dcll_moustaki.parser.questions.Answer;
 import dcll_moustaki.parser.questions.Question;
 import dcll_moustaki.parser.questions.Quiz;
-import dcll_moustaki.parser.questions.UserResponse;
 import dcll_moustaki.parser.questions.impl.DefaultAnswer;
-import dcll_moustaki.parser.questions.impl.DefaultAnswerBlock;
-import dcll_moustaki.parser.questions.impl.DefaultUserAnswerBlock;
-import dcll_moustaki.parser.questions.impl.DefaultUserResponse;
 
 
 
@@ -67,58 +61,7 @@ public class GiftQuestionService {
         return handler.getQuiz();
     }
 
-    /**
-     * Create a user response for a question.
-     * The user response is specified by a text
-     * representation of the response.
-     *
-     * @param userId              the user identifier
-     * @param question            the question
-     * @param answerBlockTextList the list of answer text block  of the
-     *  response (each answer is represented by its identifier)
-     * @return the created user response
-     */
-    public UserResponse createUserResponseForQuestionAndAnswerBlockList(
-                                    String userId, Question question,
-                                    List<List<String>> answerBlockTextList)
-                        throws GiftUserResponseAnswerNotFoundInChoiceList,
-                        GiftUserResponseAnswerBlockListSizeIsNotValidInResponse
-                        {
-        if (question.getAnswerBlockList().size() != answerBlockTextList.size())
-        {
-           throw new GiftUserResponseAnswerBlockListSizeIsNotValidInResponse();
-        }
-        DefaultUserResponse userResponse = new DefaultUserResponse();
-        userResponse.setUserIdentifier(userId);
-        userResponse.setQuestion(question);
-        for (int i = 0; i < question.getAnswerBlockList().size(); i++) {
-            DefaultAnswerBlock currentAnsBlock = 
-                 (DefaultAnswerBlock) question.getAnswerBlockList().get(i);
-            DefaultUserAnswerBlock currentUserAnsBlock = 
-            		new DefaultUserAnswerBlock();
-            userResponse.getUserAnswerBlockList().add(currentUserAnsBlock);
-            boolean answerHasBeenFound = false;
-            if (answerBlockTextList.get(i).isEmpty()) {
-                currentUserAnsBlock.getAnswerList().add(getNoResponseAnswer());
-                answerHasBeenFound = true;
-            } else {
-                for (String userAnsString : answerBlockTextList.get(i)) {
-                    for (Answer answer : currentAnsBlock.getAnswerList()) {
-                        if (answer.getIdentifier().equals(userAnsString)) {
-                            currentUserAnsBlock.getAnswerList().add(answer);
-                            answerHasBeenFound = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (!answerHasBeenFound) {
-                throw new GiftUserResponseAnswerNotFoundInChoiceList();
-            }
-        }
 
-        return userResponse;
-    }
 
     private DefaultAnswer noResponseAnswer;
 

@@ -95,6 +95,7 @@ public class DefaultQuestion implements Question {
         blockList.add(fragment);
         textBlockList.add(fragment);
     }
+    
 
     /**
      * Get answer fragment list
@@ -113,6 +114,4 @@ public class DefaultQuestion implements Question {
     public List<TextBlock> getTextBlockList() {
         return textBlockList;
     }
-
-
 }

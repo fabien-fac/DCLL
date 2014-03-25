@@ -51,14 +51,14 @@ public class GiftReader implements QuizReader {
 
     }
 
-    private void checkQuestionHasStarted() {
+    public void checkQuestionHasStarted() {
         if (!questionHasStarted) {
             questionHasStarted = true;
             quizContentHandler.onStartQuestion();
         }
     }
 
-    private void endQuiz()
+    public void endQuiz()
               throws GiftReaderQuestionWithInvalidFormatException {
         if (!questionHasEnded && !answerFragmentHasEnded) {
             throw new GiftReaderQuestionWithInvalidFormatException();
@@ -71,8 +71,9 @@ public class GiftReader implements QuizReader {
 
     }
 
-    private void processColonCharacter()
+    public void processColonCharacter()
               throws GiftReaderNotEscapedCharacterException {
+
         if (escapeMode) {
             processAnyCharacter(':');
             return;
@@ -98,7 +99,7 @@ public class GiftReader implements QuizReader {
 
     }
 
-    private void processAntiSlashCharacter()
+    public void processAntiSlashCharacter()
               throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter('\\');
@@ -107,8 +108,9 @@ public class GiftReader implements QuizReader {
         escapeMode = true;
     }
 
-    private void processLeftBracketCharacter()
+    public void processLeftBracketCharacter()
               throws GiftReaderNotEscapedCharacterException {
+
         if (escapeMode) {
             processAnyCharacter('{');
             return;
@@ -123,8 +125,9 @@ public class GiftReader implements QuizReader {
 
     }
 
-    private void processRightBracketCharacter()
+    public void processRightBracketCharacter()
               throws GiftReaderNotEscapedCharacterException {
+
         if (escapeMode) {
             processAnyCharacter('}');
             return;
@@ -151,7 +154,7 @@ public class GiftReader implements QuizReader {
         processAnswerPrefix('~');
     }
 
-    private void processAnswerPrefix(char prefix)
+    public void processAnswerPrefix(char prefix)
               throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter(prefix);
@@ -177,8 +180,9 @@ public class GiftReader implements QuizReader {
         getQuizContentHandler().onStartAnswer(String.valueOf(prefix));
     }
 
-    private void processSharpCharacter()
+    public void processSharpCharacter()
               throws GiftReaderNotEscapedCharacterException {
+
         if (escapeMode) {
             processAnyCharacter('#');
             return;
@@ -192,8 +196,10 @@ public class GiftReader implements QuizReader {
         getQuizContentHandler().onStartAnswerFeedBack(); 
     }
 
-    private void processPercentCharacter()
+
+    public void processPercentCharacter()
               throws GiftReaderNotEscapedCharacterException {
+
         if (escapeMode) {
             processAnyCharacter('%');
             return;
@@ -213,23 +219,26 @@ public class GiftReader implements QuizReader {
 
     }
 
-    private void processAnyCharacter(int currentChar)
-              throws GiftReaderNotEscapedCharacterException {
+
+    public void processAnyCharacter(int currentChar) 
+    		throws GiftReaderNotEscapedCharacterException {
         if (accumulator == null) {
             accumulator = new StringBuffer();
         }
         accumulator.append((char) currentChar);
-        // if a control caracter is present,
-        if (controlCharAccumulator != -1) {
-            if (controlCharAccumulator != '\\') {  // it must be a \
+        if (controlCharAccumulator != -1){ 
+        	// if a control caracter is present,
+            if (controlCharAccumulator != '\\'){ 
+            	// it must be a \
                 throw new GiftReaderNotEscapedCharacterException();
             }
+            
             controlCharAccumulator = -1;
         }
         escapeMode = false;
     }
 
-    private void flushAccumulator() {
+    public void flushAccumulator() {
         if (accumulator != null) {
             quizContentHandler.onString(accumulator.toString());
             accumulator = null;
@@ -245,7 +254,85 @@ public class GiftReader implements QuizReader {
         this.quizContentHandler = quizContentHandlerToSet;
     }
 
-    private QuizContentHandler quizContentHandler;
+    public StringBuffer getAccumulator() {
+		return accumulator;
+	}
+
+	public void setAccumulator(StringBuffer accumulatorToSet) {
+		this.accumulator = accumulatorToSet;
+	}
+
+	public int getControlCharAccumulator() {
+		return controlCharAccumulator;
+	}
+
+	public void setControlCharAccumulator(int controlCharAccumulatorToSet) {
+		this.controlCharAccumulator = controlCharAccumulatorToSet;
+	}
+
+	public boolean isEscapeMode() {
+		return escapeMode;
+	}
+
+	public void setEscapeMode(boolean escapeModeToSet) {
+		this.escapeMode = escapeModeToSet;
+	}
+
+	public void setQuestionHasEnded(boolean questionHasEndedToSet) {
+		this.questionHasEnded = questionHasEndedToSet;
+	}
+
+	public void setTitleHasStarted(boolean titleHasStartedToSet) {
+		this.titleHasStarted = titleHasStartedToSet;
+	}
+
+	public void setTitleHasEnded(boolean titleHasEndedToSet) {
+		this.titleHasEnded = titleHasEndedToSet;
+	}
+
+	public void setAnswerFragmentHasStarted(
+			         boolean answerFragmentHasStartedToSet) {
+		this.answerFragmentHasStarted = answerFragmentHasStartedToSet;
+	}
+
+	public void setAnswerFragmentHasEnded(
+			        boolean answerFragmentHasEndedToSet) {
+		this.answerFragmentHasEnded = answerFragmentHasEnded;
+	}
+
+	public void setAnswerHasStarted(boolean answerHasStartedToSet) {
+		this.answerHasStarted = answerHasStartedToSet;
+	}
+
+	public boolean isAnswerFeedbackHasStarted() {
+		return answerFeedbackHasStarted;
+	}
+
+	public void setAnswerFeedbackHasStarted(
+			          boolean answerFeedbackHasStartedToSet) {
+		this.answerFeedbackHasStarted = answerFeedbackHasStartedToSet;
+	}
+
+	public boolean isAnswerCreditHasStarted() {
+		return answerCreditHasStarted;
+	}
+
+	public void setAnswerCreditHasStarted(
+			        boolean answerCreditHasStartedToSet) {
+		this.answerCreditHasStarted = answerCreditHasStartedToSet;
+	}
+
+	public boolean isAnswerCreditHasEnded() {
+		return answerCreditHasEnded;
+	}
+
+	public void setAnswerCreditHasEnded(boolean answerCreditHasEndedToSet) {
+		this.answerCreditHasEnded = answerCreditHasEndedToSet;
+	}
+
+
+
+	private QuizContentHandler quizContentHandler;
     private StringBuffer accumulator;
     private int controlCharAccumulator = -1;
     private boolean escapeMode;
