@@ -41,7 +41,8 @@ public class DefaultUserAnswerBlock implements UserAnswerBlock {
     }
 
     /**
-     * Get the percent credit the user receive for his answers on the current block
+     * Get the percent credit the user receive for his answers 
+     * on the current block
      *
      * @return
      */

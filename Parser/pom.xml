@@ -42,7 +42,7 @@
 				<version>2.11</version>
 				<configuration>
 					<sourceEncoding>UTF-8</sourceEncoding>
-				  	<configLocation>checkstyle.xml</configLocation>
+					<configLocation>checkstyle.xml</configLocation>
 				</configuration>
 				<reportSets>
 					<reportSet>

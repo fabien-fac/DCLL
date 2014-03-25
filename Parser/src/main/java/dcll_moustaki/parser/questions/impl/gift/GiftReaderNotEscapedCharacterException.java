@@ -19,9 +19,10 @@ package dcll_moustaki.parser.questions.impl.gift;
 /**
  * @author franck Silvestre
  */
-public class GiftReaderNotEscapedCharacterException extends GiftReaderException {
+public class GiftReaderNotEscapedCharacterException
+                            extends GiftReaderException {
 
-    public GiftReaderNotEscapedCharacterException() {
-        super("Not_escaped_character");
-    }
+     public GiftReaderNotEscapedCharacterException() {
+          super("Not_escaped_character");
+     }
 }

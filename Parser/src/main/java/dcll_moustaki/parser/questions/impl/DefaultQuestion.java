@@ -58,13 +58,13 @@ public class DefaultQuestion implements Question {
      * Set the question type
      * @param questionType the question type
      */
-    public void setQuestionType(QuestionType questionType) {
-        this.questionType = questionType;
+    public void setQuestionType(QuestionType questionTypeToSet) {
+        this.questionType = questionTypeToSet;
     }
 
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitle(String titleToSet) {
+        this.title = titleToSet;
     }
 
     /**

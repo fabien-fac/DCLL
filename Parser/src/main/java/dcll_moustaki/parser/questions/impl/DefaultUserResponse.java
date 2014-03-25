@@ -31,7 +31,8 @@ public class DefaultUserResponse implements UserResponse {
 
     private String userIdentifier;
     private Question question;
-    private List<UserAnswerBlock> userAnswerBlockList = new ArrayList<UserAnswerBlock>();
+    private List<UserAnswerBlock> userAnswerBlockList =
+    		new ArrayList<UserAnswerBlock>();
 
 
     /**
@@ -66,16 +67,16 @@ public class DefaultUserResponse implements UserResponse {
      * Set the user identifier
      * @param userIdentifier the user identifier
      */
-    public void setUserIdentifier(String userIdentifier) {
-        this.userIdentifier = userIdentifier;
+    public void setUserIdentifier(String userIdentifierToSet) {
+        this.userIdentifier = userIdentifierToSet;
     }
 
     /**
      * Set the question
      * @param question the question
      */
-    public void setQuestion(Question question) {
-        this.question = question;
+    public void setQuestion(Question questionToSet) {
+        this.question = questionToSet;
     }
 
 

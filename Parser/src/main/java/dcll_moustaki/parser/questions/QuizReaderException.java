@@ -21,12 +21,7 @@ package dcll_moustaki.parser.questions;
  */
 public class QuizReaderException extends Exception {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	public QuizReaderException(String message) {
+    public QuizReaderException(String message) {
         super(message);
     }
 

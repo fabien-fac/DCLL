@@ -43,7 +43,8 @@ public class GiftReader implements QuizReader {
             if (accumulator != null) {
                 logger.debug("Accumulator | " + accumulator.toString());
             }
-            logger.debug("control caracter accumulator | " + (char) controlCharAccumulator);
+            logger.debug("control caracter accumulator | "
+                                    + (char) controlCharAccumulator);
         }
         endQuiz();
         quizContentHandler.onEndQuiz();
@@ -57,7 +58,8 @@ public class GiftReader implements QuizReader {
         }
     }
 
-    private void endQuiz() throws GiftReaderQuestionWithInvalidFormatException {
+    private void endQuiz()
+              throws GiftReaderQuestionWithInvalidFormatException {
         if (!questionHasEnded && !answerFragmentHasEnded) {
             throw new GiftReaderQuestionWithInvalidFormatException();
         }
@@ -69,7 +71,8 @@ public class GiftReader implements QuizReader {
 
     }
 
-    private void processColonCharacter() throws GiftReaderNotEscapedCharacterException {
+    private void processColonCharacter()
+              throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter(':');
             return;
@@ -95,7 +98,8 @@ public class GiftReader implements QuizReader {
 
     }
 
-    private void processAntiSlashCharacter() throws GiftReaderNotEscapedCharacterException {
+    private void processAntiSlashCharacter()
+              throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter('\\');
             return;
@@ -103,7 +107,8 @@ public class GiftReader implements QuizReader {
         escapeMode = true;
     }
 
-    private void processLeftBracketCharacter() throws GiftReaderNotEscapedCharacterException {
+    private void processLeftBracketCharacter()
+              throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter('{');
             return;
@@ -118,7 +123,8 @@ public class GiftReader implements QuizReader {
 
     }
 
-    private void processRightBracketCharacter() throws GiftReaderNotEscapedCharacterException {
+    private void processRightBracketCharacter()
+              throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter('}');
             return;
@@ -145,7 +151,8 @@ public class GiftReader implements QuizReader {
         processAnswerPrefix('~');
     }
 
-    private void processAnswerPrefix(char prefix) throws GiftReaderNotEscapedCharacterException {
+    private void processAnswerPrefix(char prefix)
+              throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter(prefix);
             return;
@@ -158,17 +165,20 @@ public class GiftReader implements QuizReader {
             answerFeedbackHasStarted = false;
             getQuizContentHandler().onEndAnswerFeedBack();
         }
-        if (answerHasStarted) { // the '=' or '~' char marks the end of the current answer
+     // the '=' or '~' char marks the end of the current answer
+        if (answerHasStarted) {
             getQuizContentHandler().onEndAnswer();
         } else {
             answerHasStarted = true;
         }
         answerCreditHasStarted = false;
         answerCreditHasEnded = false;
-        getQuizContentHandler().onStartAnswer(String.valueOf(prefix)); // it marks the beginning of a new one too
+        // it marks the beginning of a new one too
+        getQuizContentHandler().onStartAnswer(String.valueOf(prefix));
     }
 
-    private void processSharpCharacter() throws GiftReaderNotEscapedCharacterException {
+    private void processSharpCharacter()
+              throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter('#');
             return;
@@ -178,10 +188,12 @@ public class GiftReader implements QuizReader {
         }
         flushAccumulator();
         answerFeedbackHasStarted = true;
-        getQuizContentHandler().onStartAnswerFeedBack(); // it marks the beginning of a new one too
+     // it marks the beginning of a new one too
+        getQuizContentHandler().onStartAnswerFeedBack(); 
     }
 
-    private void processPercentCharacter() throws GiftReaderNotEscapedCharacterException {
+    private void processPercentCharacter()
+              throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter('%');
             return;
@@ -201,12 +213,14 @@ public class GiftReader implements QuizReader {
 
     }
 
-    private void processAnyCharacter(int currentChar) throws GiftReaderNotEscapedCharacterException {
+    private void processAnyCharacter(int currentChar)
+              throws GiftReaderNotEscapedCharacterException {
         if (accumulator == null) {
             accumulator = new StringBuffer();
         }
         accumulator.append((char) currentChar);
-        if (controlCharAccumulator != -1) { // if a control caracter is present,
+        // if a control caracter is present,
+        if (controlCharAccumulator != -1) {
             if (controlCharAccumulator != '\\') {  // it must be a \
                 throw new GiftReaderNotEscapedCharacterException();
             }
@@ -226,8 +240,9 @@ public class GiftReader implements QuizReader {
         return quizContentHandler;
     }
 
-    public void setQuizContentHandler(QuizContentHandler quizContentHandler) {
-        this.quizContentHandler = quizContentHandler;
+    public void setQuizContentHandler(
+    		QuizContentHandler quizContentHandlerToSet) {
+        this.quizContentHandler = quizContentHandlerToSet;
     }
 
     private QuizContentHandler quizContentHandler;

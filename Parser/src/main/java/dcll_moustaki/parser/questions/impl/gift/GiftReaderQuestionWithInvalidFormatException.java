@@ -19,7 +19,8 @@ package dcll_moustaki.parser.questions.impl.gift;
 /**
  * @author franck Silvestre
  */
-public class GiftReaderQuestionWithInvalidFormatException extends GiftReaderException {
+public class GiftReaderQuestionWithInvalidFormatException
+                                extends GiftReaderException {
 
     public GiftReaderQuestionWithInvalidFormatException() {
         super("Question_with_invalid_format");

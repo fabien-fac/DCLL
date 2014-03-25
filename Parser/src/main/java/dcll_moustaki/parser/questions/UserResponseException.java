@@ -21,12 +21,7 @@ package dcll_moustaki.parser.questions;
  */
 public class UserResponseException extends Exception {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	public UserResponseException(String message) {
+    public UserResponseException(String message) {
         super(message);
     }
 

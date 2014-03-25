@@ -186,7 +186,8 @@ public class GiftQuizContentHandler implements QuizContentHandler {
        logger.debug("Post processing of the current question");
     }
 
-    private static Logger logger = Logger.getLogger(GiftQuizContentHandler.class);
+    private static Logger logger = 
+    		Logger.getLogger(GiftQuizContentHandler.class);
 
     private DefaultQuiz quiz;
     private DefaultQuestion currentQuestion;

@@ -45,7 +45,8 @@ public class GiftQuestionService {
      * @param giftText the gift text
      * @return the result question
      */
-    public Question getQuestionFromGiftText(String giftText) throws IOException, GiftReaderException {
+    public Question getQuestionFromGiftText(String giftText)
+    		throws IOException, GiftReaderException {
         Quiz quiz = getQuizFromGiftText(giftText);
         return quiz.getQuestionList().get(0);
     }
@@ -56,7 +57,8 @@ public class GiftQuestionService {
      * @param giftText the gift text
      * @return the result quiz
      */
-    public Quiz getQuizFromGiftText(String giftText) throws IOException, GiftReaderException {
+    public Quiz getQuizFromGiftText(String giftText)
+    		throws IOException, GiftReaderException {
         GiftQuizContentHandler handler = new GiftQuizContentHandler();
         GiftReader quizReader = new GiftReader();
         quizReader.setQuizContentHandler(handler);
@@ -66,24 +68,34 @@ public class GiftQuestionService {
     }
 
     /**
-     * Create a user response for a question. The user response is specified by a text
+     * Create a user response for a question.
+     * The user response is specified by a text
      * representation of the response.
      *
      * @param userId              the user identifier
      * @param question            the question
-     * @param answerBlockTextList the list of answer text block  of the response (each answer is represented by its identifier)
+     * @param answerBlockTextList the list of answer text block  of the
+     *  response (each answer is represented by its identifier)
      * @return the created user response
      */
-    public UserResponse createUserResponseForQuestionAndAnswerBlockList(String userId, Question question, List<List<String>> answerBlockTextList) throws GiftUserResponseAnswerNotFoundInChoiceList, GiftUserResponseAnswerBlockListSizeIsNotValidInResponse {
-        if (question.getAnswerBlockList().size() != answerBlockTextList.size()) {
-            throw new GiftUserResponseAnswerBlockListSizeIsNotValidInResponse();
+    public UserResponse createUserResponseForQuestionAndAnswerBlockList(
+                                    String userId, Question question,
+                                    List<List<String>> answerBlockTextList)
+                        throws GiftUserResponseAnswerNotFoundInChoiceList,
+                        GiftUserResponseAnswerBlockListSizeIsNotValidInResponse
+                        {
+        if (question.getAnswerBlockList().size() != answerBlockTextList.size())
+        {
+           throw new GiftUserResponseAnswerBlockListSizeIsNotValidInResponse();
         }
         DefaultUserResponse userResponse = new DefaultUserResponse();
         userResponse.setUserIdentifier(userId);
         userResponse.setQuestion(question);
         for (int i = 0; i < question.getAnswerBlockList().size(); i++) {
-            DefaultAnswerBlock currentAnsBlock = (DefaultAnswerBlock) question.getAnswerBlockList().get(i);
-            DefaultUserAnswerBlock currentUserAnsBlock = new DefaultUserAnswerBlock();
+            DefaultAnswerBlock currentAnsBlock = 
+                 (DefaultAnswerBlock) question.getAnswerBlockList().get(i);
+            DefaultUserAnswerBlock currentUserAnsBlock = 
+            		new DefaultUserAnswerBlock();
             userResponse.getUserAnswerBlockList().add(currentUserAnsBlock);
             boolean answerHasBeenFound = false;
             if (answerBlockTextList.get(i).isEmpty()) {

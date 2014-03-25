@@ -30,7 +30,8 @@ public interface UserAnswerBlock {
     public List<Answer> getAnswerList();
 
     /**
-     * Get the percent credit the user receive for his answers on the current block
+     * Get the percent credit the user receive for his answers 
+     * on the current block
      * @return the percent credit
      */
     public Float evaluatePercentCredit();

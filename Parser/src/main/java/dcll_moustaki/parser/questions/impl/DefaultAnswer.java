@@ -30,13 +30,13 @@ public class DefaultAnswer implements Answer {
     private String feedback;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {return true;}
+        if (o == null || getClass() != o.getClass()) {return false;}
 
         DefaultAnswer that = (DefaultAnswer) o;
 
-        if (!identifier.equals(that.identifier)) return false;
+        if (!identifier.equals(that.identifier)) {return false;}
 
         return true;
     }
@@ -59,8 +59,8 @@ public class DefaultAnswer implements Answer {
      * Set te text value of the answer
      * @param textValue the new text value
      */
-    public void setTextValue(String textValue) {
-        this.textValue = textValue;
+    public void setTextValue(String textValueToSet) {
+        this.textValue = textValueToSet;
     }
 
     /**
@@ -76,8 +76,8 @@ public class DefaultAnswer implements Answer {
      * Set the percent credit of the answer
      * @param percentCredit the percent credit
      */
-    public void setPercentCredit(Float percentCredit) {
-        this.percentCredit = percentCredit;
+    public void setPercentCredit(Float percentCreditToSet) {
+        this.percentCredit = percentCreditToSet;
     }
 
     /**
@@ -93,16 +93,16 @@ public class DefaultAnswer implements Answer {
      * Set the identifier
      * @param identifier  the new identifier
      */
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+    public void setIdentifier(String identifierToSet) {
+        this.identifier = identifierToSet;
     }
 
     /**
      * Set the feedback
      * @param feedback
      */
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
+    public void setFeedback(String feedbackToSet) {
+        this.feedback = feedbackToSet;
     }
 
     /**

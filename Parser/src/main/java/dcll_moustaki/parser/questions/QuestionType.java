@@ -29,8 +29,8 @@ public enum QuestionType {
 
     private int code;
 
-    QuestionType(int code) {
-        this.code = code;
+    QuestionType(int codeToConstruct) {
+        this.code = codeToConstruct;
     }
 
     /**

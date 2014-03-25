@@ -19,7 +19,8 @@ package dcll_moustaki.parser.questions.impl.gift;
 /**
  * @author franck Silvestre
  */
-public class GiftUserResponseAnswerBlockListSizeIsNotValidInResponse extends GiftUserResponseException {
+public class GiftUserResponseAnswerBlockListSizeIsNotValidInResponse
+                                    extends GiftUserResponseException {
     public GiftUserResponseAnswerBlockListSizeIsNotValidInResponse() {
         super("Answer_block_list_size_is_not_valid_in_response");
     }
