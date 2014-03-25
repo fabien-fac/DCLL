@@ -69,7 +69,7 @@ public class GiftReader implements QuizReader {
 
     }
 
-    private void processColonCharacter() throws GiftReaderNotEscapedCharacterException {
+    public void processColonCharacter() throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter(':');
             return;
@@ -95,7 +95,7 @@ public class GiftReader implements QuizReader {
 
     }
 
-    private void processAntiSlashCharacter() throws GiftReaderNotEscapedCharacterException {
+    public void processAntiSlashCharacter() throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter('\\');
             return;
@@ -103,7 +103,7 @@ public class GiftReader implements QuizReader {
         escapeMode = true;
     }
 
-    private void processLeftBracketCharacter() throws GiftReaderNotEscapedCharacterException {
+    public void processLeftBracketCharacter() throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter('{');
             return;
@@ -118,7 +118,7 @@ public class GiftReader implements QuizReader {
 
     }
 
-    private void processRightBracketCharacter() throws GiftReaderNotEscapedCharacterException {
+    public void processRightBracketCharacter() throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter('}');
             return;
@@ -145,7 +145,7 @@ public class GiftReader implements QuizReader {
         processAnswerPrefix('~');
     }
 
-    private void processAnswerPrefix(char prefix) throws GiftReaderNotEscapedCharacterException {
+    public void processAnswerPrefix(char prefix) throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter(prefix);
             return;
@@ -158,7 +158,7 @@ public class GiftReader implements QuizReader {
             answerFeedbackHasStarted = false;
             getQuizContentHandler().onEndAnswerFeedBack();
         }
-        if (answerHasStarted) { // the '=' or '~' char marks the end of the current answer
+        if (answerHasStarted) {
             getQuizContentHandler().onEndAnswer();
         } else {
             answerHasStarted = true;
@@ -168,7 +168,7 @@ public class GiftReader implements QuizReader {
         getQuizContentHandler().onStartAnswer(String.valueOf(prefix)); // it marks the beginning of a new one too
     }
 
-    private void processSharpCharacter() throws GiftReaderNotEscapedCharacterException {
+    public void processSharpCharacter() throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter('#');
             return;
@@ -181,7 +181,7 @@ public class GiftReader implements QuizReader {
         getQuizContentHandler().onStartAnswerFeedBack(); // it marks the beginning of a new one too
     }
 
-    private void processPercentCharacter() throws GiftReaderNotEscapedCharacterException {
+    public void processPercentCharacter() throws GiftReaderNotEscapedCharacterException {
         if (escapeMode) {
             processAnyCharacter('%');
             return;
@@ -212,7 +212,6 @@ public class GiftReader implements QuizReader {
         	
             if (controlCharAccumulator != '\\')
             {  // it must be a \
-            	System.out.println("liil : "+controlCharAccumulator);
                 throw new GiftReaderNotEscapedCharacterException();
             }
             
@@ -260,56 +259,24 @@ public class GiftReader implements QuizReader {
 		this.escapeMode = escapeMode;
 	}
 
-	public boolean isQuestionHasStarted() {
-		return questionHasStarted;
-	}
-
-	public void setQuestionHasStarted(boolean questionHasStarted) {
-		this.questionHasStarted = questionHasStarted;
-	}
-
-	public boolean isQuestionHasEnded() {
-		return questionHasEnded;
-	}
-
 	public void setQuestionHasEnded(boolean questionHasEnded) {
 		this.questionHasEnded = questionHasEnded;
-	}
-
-	public boolean isTitleHasStarted() {
-		return titleHasStarted;
 	}
 
 	public void setTitleHasStarted(boolean titleHasStarted) {
 		this.titleHasStarted = titleHasStarted;
 	}
 
-	public boolean isTitleHasEnded() {
-		return titleHasEnded;
-	}
-
 	public void setTitleHasEnded(boolean titleHasEnded) {
 		this.titleHasEnded = titleHasEnded;
-	}
-
-	public boolean isAnswerFragmentHasStarted() {
-		return answerFragmentHasStarted;
 	}
 
 	public void setAnswerFragmentHasStarted(boolean answerFragmentHasStarted) {
 		this.answerFragmentHasStarted = answerFragmentHasStarted;
 	}
 
-	public boolean isAnswerFragmentHasEnded() {
-		return answerFragmentHasEnded;
-	}
-
 	public void setAnswerFragmentHasEnded(boolean answerFragmentHasEnded) {
 		this.answerFragmentHasEnded = answerFragmentHasEnded;
-	}
-
-	public boolean isAnswerHasStarted() {
-		return answerHasStarted;
 	}
 
 	public void setAnswerHasStarted(boolean answerHasStarted) {
