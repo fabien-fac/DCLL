@@ -297,7 +297,7 @@ public class GiftReader implements QuizReader {
 
 	public void setAnswerFragmentHasEnded(
 			        boolean answerFragmentHasEndedToSet) {
-		this.answerFragmentHasEnded = answerFragmentHasEnded;
+		this.answerFragmentHasEnded = answerFragmentHasEndedToSet;
 	}
 
 	public void setAnswerHasStarted(boolean answerHasStartedToSet) {
