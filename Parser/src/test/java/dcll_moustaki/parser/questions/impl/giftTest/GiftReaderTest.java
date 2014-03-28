@@ -570,6 +570,29 @@ public class GiftReaderTest extends TestCase {
 		{
 			assertEquals(ex.getClass(), GiftReaderNotEscapedCharacterException.class);
 		}
+		
+		GiftReader gr5 = new GiftReader();
+		QuizContentHandler gq5 = new GiftQuizContentHandler();
+		gr5.setQuizContentHandler(gq5);
+		
+		gr5.getQuizContentHandler().onStartQuiz();
+		gr5.getQuizContentHandler().onStartQuestion();
+		gr5.getQuizContentHandler().onStartTitle();
+		
+		
+		gr5.setEscapeMode(false);
+		gr5.setTitleHasStarted(true);
+		gr5.setTitleHasEnded(false);
+		gr5.setControlCharAccumulator(':');
+		
+		try
+		{
+			gr5.processColonCharacter();
+		}
+		catch (GiftReaderNotEscapedCharacterException ex)
+		{
+			assertEquals(ex.getClass(), GiftReaderNotEscapedCharacterException.class);
+		}
 	}
 	
 	/**
