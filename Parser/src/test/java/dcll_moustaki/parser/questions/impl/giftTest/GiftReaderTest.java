@@ -120,6 +120,27 @@ public class GiftReaderTest extends TestCase {
 		assertEquals(nbRep, 2);
 	}
 	
+	/*
+	 * Test the type of the question if it's a multiple choice question
+	 */
+	public void testTypeMultipleChoiceQuestion() {
+		String quest = "{Question|type=\"[]\"\n+ Correct answer.\n- Incorrect answer.\n+ Correct answer.\n- Incorrect answer.";
+		int nbPlus = 0;
+		
+		// Vérify if they are only tow response
+		for (int i = 0; i < quest.length(); i++) {
+			if (quest.charAt(i) == '+') {
+				nbPlus++;
+			}
+		}
+		
+		if (nbPlus > 1) {
+			assertTrue(quest.contains("[]"));
+		}
+	}
+	
+	
+	
 	/**
 	 * Test flushAccumulator
 	 */
