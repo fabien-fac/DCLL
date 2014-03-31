@@ -64,6 +64,62 @@ public class GiftReaderTest extends TestCase {
 		gr.parse(r);
 	}
 	
+	/*
+	 * Test if a simple question have only one possible choice
+	 */
+	public void testSimpleQuestionOnlyOneResponse() {
+		String quest = "{Question |type=\"()\"}\n+ The correct answer.\n- Distractor.\n- Distractor.\n- Distractor.";
+		int compteur = 0;
+		
+		for (int i = 0; i < quest.length(); i++) {
+		    if (quest.charAt(i) == '+')             
+		       compteur++;                          
+		}
+	
+		assertEquals(compteur, 1);
+	}
+	
+	/*
+	 * Test if a '\n' char is present before each '+' or '-'
+	 */
+	public void testSimpleQuestionBackline() {
+		String quest = "{Question |type=\"()\"}\n+ The correct answer.\n- Distractor.\n- Distractor.\n- Distractor.";
+		
+		for (int i = 0; i < quest.length(); i++) {
+		    if (quest.charAt(i) == '+' || quest.charAt(i) == '-')             
+		    	assertEquals(quest.charAt(i-1), '\n');
+		}
+	}
+	
+	/*
+	 * Test if the question is a TRUE/FALSE, she contains one '+', one '-', one "TRUE" and one "FALSE"
+	 */
+	public void testTrueFalseQuestion() {
+		String quest = "{{Bulgaria and Rumania joined the European Union in 2007.|type=\"()\"}\n+ TRUE.\n- FALSE.";
+		int nbRep = 0;
+		int nbMoins = 0;
+		int nbPlus =0;
+		
+		// Verify if a Question contain TRUE, she contain FALSE too
+		if (quest.contains("TRUE")) {
+			assertTrue(quest.contains("FALSE"));
+		}
+		
+		// Vérify if they are only tow response
+		for (int i = 0; i < quest.length(); i++) {
+		    if (quest.charAt(i) == '+') {          
+		    	nbPlus++;
+		    	nbRep++;
+		    } else if (quest.charAt(i) == '-') {
+		    	nbMoins++;
+		    	nbRep++;
+		    }
+		}
+		assertEquals(nbMoins, 1);
+		assertEquals(nbPlus, 1);
+		assertEquals(nbRep, 2);
+	}
+	
 	/**
 	 * Test flushAccumulator
 	 */
